@@ -1,12 +1,13 @@
 .PHONY: all clean fclean re
 
-NAME = ex02
+NAME = ex03
 
 CPP = c++
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98
 
 SRC += main.cpp 
 SRC += Fixed.cpp
+SRC += Point.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
