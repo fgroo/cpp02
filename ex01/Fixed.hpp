@@ -6,7 +6,7 @@
 /*   By: fgroo <student@42.eu>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 17:42:10 by fgroo             #+#    #+#             */
-/*   Updated: 2026/04/19 16:46:23 by fgroo            ###   ########.fr       */
+/*   Updated: 2026/04/19 20:36:43 by fgroo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ class Fixed {
 		Fixed( const int n );
 		Fixed( const float n );
 		Fixed( const Fixed &other );
+		Fixed	&operator=( const Fixed &other );
 		float	toFloat( void ) const;
 		int		toInt( void ) const;
 		~Fixed( void );

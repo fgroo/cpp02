@@ -6,7 +6,7 @@
 /*   By: fgroo <student@42.eu>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 17:42:10 by fgroo             #+#    #+#             */
-/*   Updated: 2026/04/16 18:27:28 by fgroo            ###   ########.fr       */
+/*   Updated: 2026/04/19 20:36:39 by fgroo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ class Fixed {
 	public:
 		Fixed( void );
 		Fixed( const Fixed &other );
-		Fixed &operator=( const Fixed &other );
+		Fixed	&operator=( const Fixed &other );
 		~Fixed( void );
 
 		int		getRawBits( void ) const;

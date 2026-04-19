@@ -6,7 +6,7 @@
 /*   By: fgroo <student@42.eu>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 18:35:54 by fgroo             #+#    #+#             */
-/*   Updated: 2026/04/19 17:28:19 by fgroo            ###   ########.fr       */
+/*   Updated: 2026/04/19 20:19:56 by fgroo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@ Fixed::Fixed( const float f ) : _fixed_point_num(roundf(f * (1 << _bits))) {
 Fixed::Fixed( const Fixed &other ) {
 	std::cout << "Copy constructor called" << std::endl;
 	this->_fixed_point_num = other._fixed_point_num;
+}
+
+Fixed &Fixed::operator=( const Fixed &other ) {
+	std::cout << "Copy assignment operator called" << std::endl;
+	if (this != &other)
+		this->_fixed_point_num = other.getRawBits();
+	return *this;
 }
 
 std::ostream	&operator<<(std::ostream &os, const Fixed &other ) {	
@@ -96,19 +103,23 @@ bool Fixed::operator!=( const Fixed &other ) const {
 }
 
 Fixed Fixed::operator+( const Fixed &other ) const {
-	return this->_fixed_point_num + other._fixed_point_num;
+	Fixed	new_val(this->_fixed_point_num + other._fixed_point_num);
+	new_val.setRawBits(new_val._fixed_point_num >> _bits);
+	return new_val;
 }
 
 Fixed Fixed::operator-( const Fixed &other ) const {
-	return this->_fixed_point_num - other._fixed_point_num;
+	Fixed	new_val(this->_fixed_point_num - other._fixed_point_num);
+	new_val.setRawBits(new_val._fixed_point_num >> _bits);
+	return new_val;
 }
 
 Fixed Fixed::operator*( const Fixed &other ) const {
-	return this->_fixed_point_num * other._fixed_point_num;
+	return static_cast<float>(this->_fixed_point_num * other._fixed_point_num >> _bits) / (1 << _bits);
 }
 
 Fixed Fixed::operator/( const Fixed &other ) const {
-	return this->_fixed_point_num / other._fixed_point_num;
+	return static_cast<float>(this->_fixed_point_num) / static_cast<float>(other._fixed_point_num);
 }
 
 Fixed &Fixed::operator++( void ) {
@@ -118,26 +129,29 @@ Fixed &Fixed::operator--( void ) {
 	return this->_fixed_point_num--, *this;
 }
 Fixed Fixed::operator++( int ) {
-	static int cpy_val = this->_fixed_point_num;
-	return ++cpy_val;
+	Fixed cpy_val(*this);
+	++this->_fixed_point_num;
+	return cpy_val;
 }
+
 Fixed Fixed::operator--( int ) {
-	static int cpy_val = this->_fixed_point_num;
-	return --cpy_val;
+	Fixed cpy_val(*this);
+	--this->_fixed_point_num;
+	return cpy_val;
 }
 
-Fixed	Fixed::min(Fixed &a, Fixed &b) {
-	return a.getRawBits() <= b.getRawBits() ? a : b;
+Fixed	&Fixed::min(Fixed &a, Fixed &b) {
+	return a <= b ? a : b;
 }
 
-Fixed	Fixed::min(const Fixed &a, const Fixed &b) {
-	return a.getRawBits() <= b.getRawBits() ? a : b;
+Fixed	const &Fixed::min(const Fixed &a, const Fixed &b) {
+	return a <= b ? a : b;
+}
+ 
+Fixed	&Fixed::max(Fixed &a, Fixed &b) {
+	return a >= b ? a : b;
 }
 
-Fixed	Fixed::max(Fixed &a, Fixed &b) {
-	return a.getRawBits() >= b.getRawBits() ? a : b;
-}
-
-Fixed	Fixed::max(const Fixed &a, const Fixed &b) {
-	return a.getRawBits() >= b.getRawBits() ? a : b;
+Fixed	const &Fixed::max(const Fixed &a, const Fixed &b) {
+	return a >= b ? a : b;
 }
